@@ -1,0 +1,110 @@
+body{
+    margin: 0px;
+    width:100vw;
+}
+
+.room{
+    position: absolute;
+    left:30vw;
+    top:40px;
+    background-color: #149e01;
+}
+
+.container{
+    width:100vw;
+    height: 100vh;
+    /* position: absolute; */
+    display: flex;
+    flex-direction: row;
+}
+
+#form{
+    flex: 0 auto;
+    width: 25vw;
+    height: 100vh;
+    /* position: relative; */
+    display: flex nowrap;
+    flex-direction: column;
+    justify-content: space-around;
+    background: lightgrey;
+    height: 100vh;
+    border-left: 1px solid;
+    z-index:99999 ;
+    
+}
+#form > * {
+    width: 90%;
+    margin-left: 10px;
+}
+
+#roomContainer{
+    width:75vw;
+    height: auto;
+    max-height: 100vh;
+    overflow: scroll;
+    left:25vw;
+    z-index: 99999;
+}
+.radio{
+    margin-top: 30px;
+    margin-left:0px;
+    margin-right:5px;
+    margin-bottom:8vh;
+}
+
+p{
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+label{
+    margin-right:4vw;
+}
+
+.slider{
+    width:92%;
+    margin-bottom:8vh;
+    background-color: white;
+}
+
+#x, #y{
+    width:10.5vw;
+    margin-right:13px; 
+    margin-bottom: 15px;   
+}
+#setbtn{
+    width:90%;
+    margin-bottom: 8vh; 
+}
+
+#startbtn, #resetbtn {
+    width:11vw;
+    margin-right:10px; 
+    margin-bottom: 8vh; 
+}
+
+#command, #size{
+    width:90%;
+    margin-bottom: 15px; 
+}
+
+li{
+    margin-bottom: 15px;
+}
+
+#result{
+    background-color: #f9fafb;
+    border-radius: 5px;
+    width:90%;
+    height: 90px;
+    border-left: 3px solid;
+}
+#result > *{
+    padding:10px;
+}
+#commandContainer{
+    width:100%;
+    margin-right:0px;
+    padding:0px;
+
+}
