@@ -117,9 +117,9 @@ var App =  React.createClass({
     var continueLoop= true;
     var nextCommand = this.state.commandList[0];
     this.state.commandList.shift();
-    if (nextCommand.toLowerCase() === 'l' || nextCommand.toLowerCase() === 'h'){
+    if (nextCommand.toLowerCase() === 'l' || nextCommand.toLowerCase() === 'v'){
       nextCommand=-90;
-    } else if (nextCommand.toLowerCase() === 'r' || nextCommand.toLowerCase() === 'v'){
+    } else if (nextCommand.toLowerCase() === 'r' || nextCommand.toLowerCase() === 'h'){
       nextCommand=90;
     }else if (nextCommand.toLowerCase() === 'f' || nextCommand.toLowerCase() === 'g'){
       nextCommand= 0;
@@ -154,7 +154,7 @@ var App =  React.createClass({
         continueLoop = false;
       }
     }else if (this.state.direction === 180  ){
-      if (nextCommand === 0 && this.state.startY-1<this.state.size){
+      if (nextCommand === 0 && 0<=this.state.startY-1){
         this.setState({startY:this.state.startY-1, direction: direction});
       }else if (nextCommand === 90 && this.state.startX+1<this.state.size){
         this.setState({startX:this.state.startX-1, direction: direction});
