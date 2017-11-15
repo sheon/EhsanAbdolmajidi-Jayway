@@ -1,10 +1,13 @@
 var h = React.createElement;
-// var magnifier = 40;
 var animationIterator=0;
 var hiddenCanvas;
 var hiddenContext;
 var orientation;
 
+
+  /**
+ * This component creats the command panel in the App.. 
+ */
 var Command = React.createClass({
   render: function(){
     return h('div',{id:'commandContainer'},
@@ -18,7 +21,16 @@ var Command = React.createClass({
 })
 
 
+/**
+ * This is the main commponent of this application where 
+ * the robot and room along with necessary calculations are done.
+ */
 var App =  React.createClass({
+  
+
+/**
+ * This function initialized the default values for the app.
+ */
   getInitialState: function(){
     return {
       shape: 'Square',
@@ -35,10 +47,19 @@ var App =  React.createClass({
     }
   },
 
+
+  /**
+ * This function parses and returns the given command string into a list of individual directions. 
+ */
   parseInputs: function(input){
     return input.split('');    
   },
 
+
+  /**
+ * This function is an event handler fot reseting the application. 
+ * 
+ */
   reset: function(){
     var form = document.getElementById('form');
     form.reset();
@@ -60,6 +81,10 @@ var App =  React.createClass({
 
   },
 
+
+  /**
+ * This function draws the room with the robot on it. 
+ */
   drawRoom: function(){
     if (this.state.canvas !== null){
       if (this.state.shape === 'Circle'){
@@ -81,6 +106,10 @@ var App =  React.createClass({
     
   },
 
+
+  /**
+ * This function is an event handler setting the size and shape of the room.
+ */
   onChange: function(event) {
     var elmn = event.target;    
     if(elmn.type==='radio'){
@@ -95,6 +124,9 @@ var App =  React.createClass({
     }
   },
 
+/**
+ * This function is an event handler for setting the initial location of the robot.  
+ */
   onClick: function(event){
     var x = document.getElementById('x').value;
     var y = document.getElementById('y').value;
@@ -116,6 +148,11 @@ var App =  React.createClass({
     } 
   },
 
+
+/**
+ * This function calculates the next step based on the give commands. 
+ * it calculated the new coordinates and the direction of the robot in the square room. 
+ */
   calculateNextStepSquare: function(){
     var continueLoop= true;
     var nextCommand = this.state.commandList[0];
@@ -172,10 +209,14 @@ var App =  React.createClass({
       }
     }
     orientation = direction;
-    // this.setState({direction: direction});
     return [direction, continueLoop]
   },
 
+
+/**
+ * This function calculates the next step based on the give commands. 
+ * it calculated the new coordinates and the direction of the robot in the circular room. 
+ */
   calculateNextStepCircle: function(){
     var continueLoop= true;
     var nextCommand = this.state.commandList[0];
@@ -232,10 +273,14 @@ var App =  React.createClass({
       }
     }
     orientation = direction;
-    // this.setState({direction: direction});
     return [direction, continueLoop]
   },
 
+
+/**
+ * This function makes the animation for moving the robot with a setTimeout of every second.
+ * This function the calls itself untill there is not command is left in the list or the robot has reached the end of the room. 
+ */
   delayedLoop: function(){
     this.setState({prevX : this.state.startX, prevY : this.state.startY});
     setTimeout(function(){
@@ -250,15 +295,18 @@ var App =  React.createClass({
         this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
         this.drawRobot(nextStepInfo[0]); 
         this.delayedLoop();  
-        // if (this.state.commandList.length>0) {           
-        //   this.delayedLoop();            
-        // }
       }else {
         this.drawRoom();
       }
     }.bind(this), 1000)
   },
 
+
+  
+/**
+ * This function draws the robot based on the location startX and startY and direction in the initialState of the App component
+ * This function is mainly called inside darwRoom in order to make sure the robot is shown in every update. 
+ */
   drawRobot: function(){
     if (this.state.startX === null && this.state.startY === null){
       return
@@ -270,6 +318,9 @@ var App =  React.createClass({
       this.state.context.translate( (this.state.size*this.state.magnifier)/2, (this.state.size*this.state.magnifier)/2);
       this.state.context.beginPath();
       if (this.state.direction!==0){
+
+        // this part of code could be used if the center robot should not be on 0, 0 coordinates.
+
         // this.state.context.translate( (this.state.startX*magnifier)+(magnifier/2), (this.state.startY*magnifier)-(magnifier/2));
         // this.state.context.rotate(this.state.direction*Math.PI/180);
         // this.state.context.translate(-(this.state.startX*magnifier)-(magnifier/2),-(this.state.startY*magnifier)+(magnifier/2));
@@ -278,6 +329,8 @@ var App =  React.createClass({
         this.state.context.rotate(this.state.direction*Math.PI/180);
         this.state.context.translate(-(this.state.startX*this.state.magnifier),-(this.state.startY*this.state.magnifier));
       }
+
+      // this part of code could be used if the center robot should not be on 0, 0 coordinates.
 
       // this.state.context.moveTo((this.state.startX*magnifier)+(magnifier/2), (this.state.startY*magnifier)-magnifier);
       // this.state.context.lineTo((this.state.startX*magnifier), (this.state.startY*magnifier));
@@ -310,14 +363,24 @@ var App =  React.createClass({
     hiddenContext.drawImage(this.state.canvas, 0, 0);
   },
 
+  
+/**
+ * This function the distance between the center of the cel 
+ * that the robot is in it to the center of the circular room. 
+ * it is a rough estimation to check whether the robot has reach the wall or not.
+ */
   distance: function(dx,dy){
     var distance = Math.sqrt(dx*dx+ dy*dy);
     return distance;
   },
 
+
+/**
+ * This function is an event handler which pushes the inserted command string into the app
+ * and makes robot move.
+ */
   start: function(){
     var command = document.getElementById("command");
-    // this.drawRobot();
     if (command.value !== ''){
       var commandList = this.parseInputs(command.value);
       this.setState({commandList:commandList});
@@ -327,6 +390,11 @@ var App =  React.createClass({
     }
   },
 
+
+  /**
+ * This function is trigered everytime one of the initial states is update in the app.
+ * thats why it calls the drawRoom function to make sure the room is also updated. 
+ */
   componentDidUpdate: function(){
     if (this.state.context === null){
       var context = this.state.canvas.getContext("2d");
@@ -336,6 +404,9 @@ var App =  React.createClass({
       
   },
 
+  /**
+ * This function is trigered once in the begining when the page is loaded. 
+ */
   componentDidMount: function(){
     hiddenCanvas = document.getElementById("hidden");
     hiddenContext = hiddenCanvas.getContext("2d");
@@ -344,6 +415,10 @@ var App =  React.createClass({
     this.setState({canvas: canvas, context: context});
   },
 
+
+/**
+ * This function renders the HTML page.
+ */
   render: function(){
     var locationX,locationY; 
     if (this.state.startX !== null && this.state.startX !== null && this.state.shape === 'Square'){
