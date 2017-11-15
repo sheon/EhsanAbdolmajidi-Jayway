@@ -10,7 +10,8 @@ body{
 }
 
 .container{
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     left:0;
     display:flex;
 }
@@ -23,7 +24,7 @@ body{
     z-index:99999 ;
     position: sticky;
     bottom: 0px;
-    
+    height:auto;    
 }
 #form > * {
     width: 90%;
@@ -32,7 +33,7 @@ body{
 
 #roomContainer{
     width:75vw;
-    height: 100%;
+    height: auto;
     left:25vw;
     z-index: 99999;
     overflow: scroll;
@@ -49,8 +50,10 @@ p{
     margin-bottom:5px;
 }
 
-label{
-    margin-right:4vw;
+label {
+    position: relative;
+    display: inline;
+
 }
 
 .slider{
@@ -88,7 +91,7 @@ li{
     background-color: #f9fafb;
     border-radius: 5px;
     width:90%;
-    height: 90px;
+    height: auto;
     border-left: 3px solid;
 }
 #result > *{
