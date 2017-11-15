@@ -96,14 +96,17 @@ var App =  React.createClass({
   },
 
   onClick: function(event){
-    var x = +document.getElementById('x').value;
-    var y = +document.getElementById('y').value;
+    var x = document.getElementById('x').value;
+    var y = document.getElementById('y').value;
+    
     if ( x === '' && y === ''){
       alert('Please fill in the starting point with xy format!');
     } else {
+      x = +x;
+      y = +y;
       if(this.state.startX !== null && this.state.startY !== null){
         alert('You need to reset!');
-      } else if (this.state.shape === 'Square' && 0<=x && x<this.state.size && 0<=y && y<this.state.size){
+      } else if (this.state.shape === 'Square' && 0<=x && x-1<this.state.size && 0<=y-1 && y<this.state.size){
       this.setState({startX:x-1, startY:y-1, direction:0});
     }else if (this.state.shape === 'Circle' && this.distance(x, y)< (this.state.size/2)){
       this.setState({startX:x, startY:y, direction:0});
@@ -343,7 +346,7 @@ var App =  React.createClass({
 
   render: function(){
     var locationX,locationY; 
-    if (this.state.shape !== null && this.state.shape === 'Square'){
+    if (this.state.startX !== null && this.state.startX !== null && this.state.shape === 'Square'){
         locationX = this.state.startX+1;
         locationY = this.state.startY+1;
     }else{
