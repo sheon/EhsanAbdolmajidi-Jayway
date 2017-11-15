@@ -4,32 +4,25 @@ body{
 }
 
 .room{
-    position: absolute;
-    left:30vw;
+    position: relative;
+    left:40px;
     top:40px;
-    background-color: #149e01;
 }
 
 .container{
-    width:100vw;
     height: 100vh;
-    /* position: absolute; */
-    display: flex;
-    flex-direction: row;
+    left:0;
+    display:flex;
 }
 
 #form{
     flex: 0 auto;
     width: 25vw;
-    height: 100vh;
-    /* position: relative; */
-    display: flex nowrap;
-    flex-direction: column;
-    justify-content: space-around;
     background: lightgrey;
-    height: 100vh;
-    border-left: 1px solid;
+    border-left: 2px solid;
     z-index:99999 ;
+    position: sticky;
+    bottom: 0px;
     
 }
 #form > * {
@@ -39,11 +32,10 @@ body{
 
 #roomContainer{
     width:75vw;
-    height: auto;
-    max-height: 100vh;
-    overflow: scroll;
+    height: 100%;
     left:25vw;
     z-index: 99999;
+    overflow: scroll;
 }
 .radio{
     margin-top: 30px;
