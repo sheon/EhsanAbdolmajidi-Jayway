@@ -104,7 +104,7 @@ var App =  React.createClass({
       if(this.state.startX !== null && this.state.startY !== null){
         alert('You need to reset!');
       } else if (this.state.shape === 'Square' && 0<=x && x<this.state.size && 0<=y && y<this.state.size){
-      this.setState({startX:x, startY:y, direction:0});
+      this.setState({startX:x-1, startY:y-1, direction:0});
     }else if (this.state.shape === 'Circle' && this.distance(x, y)< (this.state.size/2)){
       this.setState({startX:x, startY:y, direction:0});
     }else{
@@ -132,45 +132,37 @@ var App =  React.createClass({
       direction = 0;
     } 
     if (this.state.direction === 0 ) {
-      if (nextCommand === 0 && this.state.startY+1<this.state.size){
-        this.setState({ startY:this.state.startY+1, direction: direction});
-      }else if (nextCommand === 90 && this.state.startX+1<this.state.size){
-        this.setState({startX:this.state.startX+1, direction: direction});
-      }else if (nextCommand === -90 && 0<=this.state.startX-1){
-        this.setState({startX:this.state.startX-1,direction: direction});
+      if (nextCommand === 0 && 0<=this.state.startY-1){
+        this.setState({ startY:this.state.startY-1});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({ direction: direction});
       } else {
         alert('Reached the end of the room.');
         continueLoop = false;
       }     
     } else if (this.state.direction === 90){
       if (nextCommand === 0 && this.state.startX+1<this.state.size){
-        this.setState({startX:this.state.startX+1, direction: direction});
-      }else if (nextCommand === 90 && 0<=this.state.startY-1){
-        this.setState({ startY:this.state.startY-1, direction: direction});
-      }else if (nextCommand === -90 && this.state.startY+1<this.state.size){
-        this.setState({startY:this.state.startY+1, direction: direction});
+        this.setState({startX:this.state.startX+1});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({direction: direction});
       }else {
         alert('Reached the end of the room.');
         continueLoop = false;
       }
     }else if (this.state.direction === 180  ){
-      if (nextCommand === 0 && 0<=this.state.startY-1){
-        this.setState({startY:this.state.startY-1, direction: direction});
-      }else if (nextCommand === 90 && this.state.startX+1<this.state.size){
-        this.setState({startX:this.state.startX-1, direction: direction});
-      }else if (nextCommand === -90 && 0<=this.state.startX-1){
-        this.setState({startX:this.state.startX+1, direction: direction});
+      if (nextCommand === 0 && this.state.startY+1<this.state.size){
+        this.setState({startY:this.state.startY+1});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({ direction: direction});
       }else {
         alert('Reached the end of the room.');
         continueLoop = false;
       }
     }else if (this.state.direction === 270  ){
       if (nextCommand === 0  && 0<=this.state.startX-1){
-        this.setState({startX:this.state.startX-1, direction: direction});
-      }else if (nextCommand === 90 && this.state.startY+1<this.state.size){
-        this.setState({startY:this.state.startY+1, direction: direction});
-      }else if (nextCommand === -90 && 0<=this.state.startY-1){
-        this.setState({startY:this.state.startY-1, direction: direction});
+        this.setState({startX:this.state.startX-1});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({ direction: direction});
       } else {
         alert('Reached the end of the room.');
         continueLoop = false;
@@ -201,11 +193,9 @@ var App =  React.createClass({
     } 
     if (this.state.direction === 0 ) {
       if (nextCommand === 0 && this.distance(this.state.startX,this.state.startY+1)<(this.state.size/2)){
-        this.setState({ startY:this.state.startY-1, direction: direction});
-      }else if (nextCommand === 90 && this.distance(this.state.startX+1,this.state.startY)<(this.state.size/2)){
-        this.setState({startX:this.state.startX+1, direction: direction});
-      }else if (nextCommand === -90 && this.distance(this.state.startX-1,this.state.startY)<(this.state.size/2)){
-        this.setState({startX:this.state.startX-1, direction: direction});
+        this.setState({ startY:this.state.startY-1});
+      }else if (nextCommand === 90 || nextCommand === -90 ){
+        this.setState({direction: direction});
       } else {
         alert('Reached the end of the room.');
         continueLoop = false;
@@ -213,32 +203,26 @@ var App =  React.createClass({
     } else if (this.state.direction === 90){
       if (nextCommand === 0 && this.distance(this.state.startX+1,this.state.startY)<(this.state.size/2)){
         this.setState({startX:this.state.startX+1, direction: direction});
-      }else if (nextCommand === 90 && this.distance(this.state.startX,this.state.startY+1)<(this.state.size/2)){
-        this.setState({ startY:this.state.startY+1,direction: direction});
-      }else if (nextCommand === -90 && this.distance(this.state.startX,this.state.startY-1)<(this.state.size/2)){
-        this.setState({startY:this.state.startY-1, direction: direction});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({direction: direction});
       }else {
         alert('Reached the end of the room.');
         continueLoop = false;
       }
     }else if (this.state.direction === 180  ){
       if (nextCommand === 0 && this.distance(this.state.startX,this.state.startY+1)<(this.state.size/2)){
-        this.setState({startY:this.state.startY+1,direction: direction});
-      }else if (nextCommand === 90 && this.distance(this.state.startX-1,this.state.startY)<(this.state.size/2)){
-        this.setState({startX:this.state.startX-1,direction: direction});
-      }else if (nextCommand === -90 && this.distance(this.state.startX+1,this.state.startY)<(this.state.size/2)){
-        this.setState({startX:this.state.startX+1,direction: direction});
+        this.setState({startY:this.state.startY+1});
+      }else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({direction: direction});
       }else {
         alert('Reached the end of the room.');
         continueLoop = false;
       }
     }else if (this.state.direction === 270  ){
       if (nextCommand === 0  && this.distance(this.state.startX-1,this.state.startY)<(this.state.size/2)){
-        this.setState({startX:this.state.startX-1,direction: direction});
-      }else if (nextCommand === 90 && this.distance(this.state.startX,this.state.startY-1)<(this.state.size/2)){
-        this.setState({startY:this.state.startY-1,direction: direction});
-      }else if (nextCommand === -90 && this.distance(this.state.startX,this.state.startY+1)<(this.state.size/2)){
-        this.setState({startY:this.state.startY+1,direction: direction});
+        this.setState({startX:this.state.startX-1});
+      } else if (nextCommand === 90 || nextCommand === -90){
+        this.setState({direction: direction});
       } else {
         alert('Reached the end of the room.');
         continueLoop = false;
@@ -276,6 +260,7 @@ var App =  React.createClass({
     if (this.state.startX === null && this.state.startY === null){
       return
     }
+    this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
     if (this.state.shape ==='Circle'){
       this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
       this.state.context.save();
@@ -307,12 +292,12 @@ var App =  React.createClass({
     } else{
       this.state.context.save()
       this.state.context.beginPath();
-      this.state.context.translate( (this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.canvas.height-(this.state.startY*this.state.magnifier)-(this.state.magnifier/2)));
+      this.state.context.translate( (this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier)+(this.state.magnifier/2));
       this.state.context.rotate(this.state.direction*Math.PI/180);
-      this.state.context.translate(-((this.state.startX*this.state.magnifier)+(this.state.magnifier/2)),-((this.state.canvas.height-(this.state.startY*this.state.magnifier))-(this.state.magnifier/2)));
-      this.state.context.moveTo((this.state.startX*this.state.magnifier), (this.state.canvas.height-(this.state.startY*this.state.magnifier)));
-      this.state.context.lineTo(((this.state.startX*this.state.magnifier)+this.state.magnifier), (this.state.canvas.height-(this.state.startY*this.state.magnifier)));
-      this.state.context.lineTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.canvas.height-(this.state.startY*this.state.magnifier)-this.state.magnifier));
+      this.state.context.translate(-((this.state.startX*this.state.magnifier)+(this.state.magnifier/2)),-((this.state.startY*this.state.magnifier)+(this.state.magnifier/2)));
+      this.state.context.moveTo((this.state.startX*this.state.magnifier), (this.state.startY*this.state.magnifier)+this.state.magnifier);
+      this.state.context.lineTo((this.state.startX*this.state.magnifier)+this.state.magnifier, (this.state.startY*this.state.magnifier)+this.state.magnifier);
+      this.state.context.lineTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier));
       this.state.context.fillStyle='red';
       this.state.context.fill();
       this.state.context.restore();
@@ -356,7 +341,15 @@ var App =  React.createClass({
     this.setState({canvas: canvas, context: context});
   },
 
-  render: function(){    
+  render: function(){
+    var locationX,locationY; 
+    if (this.state.shape !== null && this.state.shape === 'Square'){
+        locationX = this.state.startX+1;
+        locationY = this.state.startY+1;
+    }else{
+      locationX = this.state.startX;
+      locationY = this.state.startY;
+    }
     if (this.state.direction !== null){
       switch (this.state.direction){
         case 0:
@@ -388,7 +381,7 @@ var App =  React.createClass({
         h('li', {key:'sizeOp' }, 'Size: '+ this.state.size),
         h('li',{key:'magnifierOp'},'Magnifier: ' + this.state.magnifier)),
         h('div',{id:'result'},
-          h('p',null, 'Current location: ' + this.state.startX + ','+ this.state.startY) ,
+          h('p',null, 'Current location: ' + (locationX) + ','+ (locationY)) ,
           h('p',null, 'Current direction: ' + orientation))),
       h('div',{id:'roomContainer'},
       h('canvas',{className:'room',id:'room', width:this.state.size*this.state.magnifier, height:this.state.size*this.state.magnifier},null),
