@@ -72,13 +72,12 @@ var App =  React.createClass({
     this.setState({prevX:null});
     this.setState({prevY:null});
     this.setState({size:10});
-    this.setState({shape:'Square'});
-    this.setState({direction:0});
+    // this.setState({shape:'Square'});
+    this.setState({direction:null});
     this.setState({commandList:null});
     this.setState({convas:null});
     this.setState({context:null});
     this.setState({magnifier:50});
-
   },
 
 
@@ -86,25 +85,56 @@ var App =  React.createClass({
  * This function draws the room with the robot on it. 
  */
   drawRoom: function(){
-    if (this.state.canvas !== null){
+    if (this.state.canvas !== null && this.state.context !== null){
       if (this.state.shape === 'Circle'){
         this.drawRobot();
+        this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
         this.state.context.beginPath();
         this.state.context.arc(this.state.size*this.state.magnifier/2, this.state.size*this.state.magnifier/2, this.state.size*this.state.magnifier/2, 0, 2*Math.PI);
         this.state.context.fillStyle ='#DFCEBE';
         this.state.context.fill();
         this.state.canvas.style.backgroundColor='white'; 
+        this.drawBoard();
         this.state.context.drawImage(hiddenCanvas,0,0)       
       } else {
         this.drawRobot();
         this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+        this.state.context.beginPath();
         this.state.canvas.style.backgroundColor='#DFCEBE';
+        this.drawBoard();
         this.state.context.drawImage(hiddenCanvas,0,0) 
       }
     }
     
   },
   
+  drawBoard: function(){
+    var x, y;
+    switch(this.state.shape){
+      case 'Circle':
+        x = 0.5;
+        y = 0.5;
+        break;
+      case 'Square':
+        x = 0;
+        y = 0;
+        break;
+    }
+    for ( y; y <= this.state.size; y += 1) {
+        this.state.context.moveTo(0, y*this.state.magnifier);
+        this.state.context.lineTo(this.state.size*this.state.magnifier, y*this.state.magnifier);
+    }
+    
+    
+    for (x; x <= this.state.size; x += 1) {
+      this.state.context.moveTo(x*this.state.magnifier , 0);
+      this.state.context.lineTo(x*this.state.magnifier, this.state.size*this.state.magnifier);
+    }
+    
+    this.state.context.strokeStyle = "gray";
+    this.state.context.stroke();
+  },
+
   
   /**
  * This function is an event handler setting the size and shape of the room.
@@ -119,7 +149,8 @@ var App =  React.createClass({
       magnifier = elmn.value;
       this.setState({magnifier : elmn.value});
     } else {
-      this.setState({size: elmn.value, shapechanged:true});
+      var shapeSize = this.state.shape === 'Square'? elmn.value:2*elmn.value;
+      this.setState({size: shapeSize, shapechanged:true});
     }
   },
 
@@ -235,7 +266,7 @@ var App =  React.createClass({
       direction = 0;
     } 
     if (this.state.direction === 0 ) {
-      if (nextCommand === 0 && this.distance(this.state.startX,this.state.startY+1)<(this.state.size/2)){
+      if (nextCommand === 0 && this.distance(this.state.startX,this.state.startY-1)<(this.state.size/2)){
         this.setState({ startY:this.state.startY-1});
       }else if (nextCommand === 90 || nextCommand === -90 ){
         this.setState({direction: direction});
@@ -348,7 +379,9 @@ var App =  React.createClass({
       this.state.context.restore();
 
     } else{
-      this.state.context.save()
+      this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+      hiddenContext.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+      this.state.context.save();
       this.state.context.beginPath();
       this.state.context.translate( (this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier)+(this.state.magnifier/2));
       this.state.context.rotate(this.state.direction*Math.PI/180);
@@ -446,13 +479,13 @@ var App =  React.createClass({
           break;
       }
     } 
-    this.state.shapechanged;     
+    var defaultShapeChecked = this.state.shape ==='Circle' ? true: false; 
     return (h('div', {className:'container', id:'container'},
       h('form',{id:'form'},
         h('label', {key:'square', id:'square'},
-        h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Square', defaultChecked:true, value:'Square'},null), 'Square'),
+        h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Square', checked:!defaultShapeChecked, value:'Square'},null), 'Square'),
         h('label', {key:'circle', id:'circle'},
-        h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Circle', defaultChecked:false, value:'Circle'},null), 'Circle'),
+        h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Circle', checked:defaultShapeChecked, value:'Circle'},null), 'Circle'),
         // h('input',{type:"range", min:"1", max:"100", defaultValue:this.state.magnifier, className:"slider", id:"slider", onChange:this.onChange}, null), //it is a bit buggy....
         h('input', {placeholder:"size", id:"size", onChange:this.onChange},null),
         h(Command,{onClick:{set:this.onClick, start:this.start, reset:this.reset}}, 'Command'),
