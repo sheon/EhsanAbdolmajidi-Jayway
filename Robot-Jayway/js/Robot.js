@@ -90,23 +90,22 @@ var App =  React.createClass({
       if (this.state.shape === 'Circle'){
         this.drawRobot();
         this.state.context.beginPath();
-        this.state.context.restore();
         this.state.context.arc(this.state.size*this.state.magnifier/2, this.state.size*this.state.magnifier/2, this.state.size*this.state.magnifier/2, 0, 2*Math.PI);
-        this.state.context.fillStyle ='#149e01';
+        this.state.context.fillStyle ='#DFCEBE';
         this.state.context.fill();
         this.state.canvas.style.backgroundColor='white'; 
         this.state.context.drawImage(hiddenCanvas,0,0)       
       } else {
         this.drawRobot();
         this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
-        this.state.canvas.style.backgroundColor='#149e01';
+        this.state.canvas.style.backgroundColor='#DFCEBE';
         this.state.context.drawImage(hiddenCanvas,0,0) 
       }
     }
     
   },
-
-
+  
+  
   /**
  * This function is an event handler setting the size and shape of the room.
  */
@@ -308,10 +307,13 @@ var App =  React.createClass({
  * This function is mainly called inside darwRoom in order to make sure the robot is shown in every update. 
  */
   drawRobot: function(){
+    this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+    hiddenContext.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+
     if (this.state.startX === null && this.state.startY === null){
       return
     }
-    this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+
     if (this.state.shape ==='Circle'){
       this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
       this.state.context.save();
@@ -340,7 +342,7 @@ var App =  React.createClass({
       this.state.context.lineTo(((this.state.startX*this.state.magnifier)+this.state.magnifier/2), (this.state.startY*this.state.magnifier)+(this.state.magnifier/2));
       this.state.context.lineTo((this.state.startX*this.state.magnifier)-(this.state.magnifier/2), (this.state.startY*this.state.magnifier)+(this.state.magnifier/2));
 
-      this.state.context.fillStyle='red';
+      this.state.context.fillStyle='#714029';
       this.state.context.fill();
       this.state.context.translate( -(this.state.size*this.state.magnifier)/2, (this.state.size*this.state.magnifier)/2);
       this.state.context.restore();
@@ -354,12 +356,12 @@ var App =  React.createClass({
       this.state.context.moveTo((this.state.startX*this.state.magnifier), (this.state.startY*this.state.magnifier)+this.state.magnifier);
       this.state.context.lineTo((this.state.startX*this.state.magnifier)+this.state.magnifier, (this.state.startY*this.state.magnifier)+this.state.magnifier);
       this.state.context.lineTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier));
-      this.state.context.fillStyle='red';
+      this.state.context.fillStyle='#714029';
       this.state.context.fill();
       this.state.context.restore();
 
     }
-    hiddenContext.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
+    
     hiddenContext.drawImage(this.state.canvas, 0, 0);
   },
 
