@@ -1,6 +1,7 @@
 body{
     margin: 0px;
     width:100vw;
+    background-color: white;
 }
 
 .room{
@@ -19,7 +20,7 @@ body{
 #form{
     flex: 0 auto;
     width: 25vw;
-    background: lightgrey;
+    background: #84B4B8;
     border-left: 2px solid;
     z-index:99999 ;
     position: sticky;
