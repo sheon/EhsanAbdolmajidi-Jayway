@@ -144,6 +144,7 @@ var App =  React.createClass({
     if(elmn.type==='radio'){
       var prevShape = document.getElementById(this.state.shape);
       prevShape.checked=false;
+      this.reset();
       this.setState({shape: elmn.value, shapechanged:true});
     } else if(elmn.type==='range'){ 
       magnifier = elmn.value;
@@ -238,8 +239,7 @@ var App =  React.createClass({
         continueLoop = false;
       }
     }
-    orientation = direction;
-    return [direction, continueLoop]
+    return continueLoop
   },
 
 
@@ -302,8 +302,7 @@ var App =  React.createClass({
         continueLoop = false;
       }
     }
-    orientation = direction;
-    return [direction, continueLoop]
+    return continueLoop;
   },
 
 
@@ -314,16 +313,16 @@ var App =  React.createClass({
   delayedLoop: function(){
     this.setState({prevX : this.state.startX, prevY : this.state.startY});
     setTimeout(function(){
-      var nextStepInfo
+      var toBeContinued;
       if(this.state.shape === 'Circle'){
-        nextStepInfo = this.calculateNextStepCircle();
+        toBeContinued = this.calculateNextStepCircle();
       }else {
-        nextStepInfo = this.calculateNextStepSquare();
+        toBeContinued = this.calculateNextStepSquare();
       }
       
-      if (nextStepInfo[1] && this.state.commandList.length>0){
+      if (toBeContinued && this.state.commandList.length>0){
         this.state.context.clearRect(0,0,this.state.canvas.width,this.state.canvas.height);
-        this.drawRobot(nextStepInfo[0]); 
+        this.drawRobot(); 
         this.delayedLoop();  
       }else {
         this.drawRoom();
@@ -386,9 +385,12 @@ var App =  React.createClass({
       this.state.context.translate( (this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier)+(this.state.magnifier/2));
       this.state.context.rotate(this.state.direction*Math.PI/180);
       this.state.context.translate(-((this.state.startX*this.state.magnifier)+(this.state.magnifier/2)),-((this.state.startY*this.state.magnifier)+(this.state.magnifier/2)));
-      this.state.context.moveTo((this.state.startX*this.state.magnifier), (this.state.startY*this.state.magnifier)+this.state.magnifier);
-      this.state.context.lineTo((this.state.startX*this.state.magnifier)+this.state.magnifier, (this.state.startY*this.state.magnifier)+this.state.magnifier);
-      this.state.context.lineTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier));
+      
+      this.state.context.moveTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/2), (this.state.startY*this.state.magnifier));
+      this.state.context.lineTo((this.state.startX*this.state.magnifier), (this.state.startY*this.state.magnifier)+(this.state.magnifier/1));
+      this.state.context.lineTo((this.state.startX*this.state.magnifier)+(this.state.magnifier/1), (this.state.startY*this.state.magnifier)+(this.state.magnifier/1));
+
+
       this.state.context.fillStyle='#714029';
       this.state.context.fill();
       this.state.context.restore();
@@ -486,16 +488,16 @@ var App =  React.createClass({
         h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Square', checked:!defaultShapeChecked, value:'Square'},null), 'Square'),
         h('label', {key:'circle', id:'circle'},
         h('input',{onChange:this.onChange, type:"radio", className:'radio', id:'Circle', checked:defaultShapeChecked, value:'Circle'},null), 'Circle'),
-        // h('input',{type:"range", min:"1", max:"100", defaultValue:this.state.magnifier, className:"slider", id:"slider", onChange:this.onChange}, null), //it is a bit buggy....
+        h('p',{key:'magnifierOp'},'Magnifier: ' + this.state.magnifier),
+        h('input',{type:"range", min:"1", max:"100", defaultValue:this.state.magnifier, className:"slider", id:"slider", onChange:this.onChange}, null), 
         h('input', {placeholder:"size", id:"size", onChange:this.onChange},null),
         h(Command,{onClick:{set:this.onClick, start:this.start, reset:this.reset}}, 'Command'),
         h('ul', null, 
         h('li', {key:'shapeOp' }, 'Shape: '+ this.state.shape ),
-        h('li', {key:'sizeOp' }, 'Size: '+ this.state.size),
-        h('li',{key:'magnifierOp'},'Magnifier: ' + this.state.magnifier)),
+        h('li', {key:'sizeOp' }, 'Size: '+ this.state.size)),
         h('div',{id:'result'},
           h('p',null, 'Current location: ' + (locationX) + ','+ (locationY)) ,
-          h('p',null, 'Current direction: ' + orientation))),
+          h('p',null, 'Current direction: ' + (this.state.direction === null? null:orientation)))),
       h('div',{id:'roomContainer'},
       h('canvas',{className:'room',id:'room', width:this.state.size*this.state.magnifier, height:this.state.size*this.state.magnifier},null),
       h('canvas',{id:'hidden', width:this.state.size*this.state.magnifier, height:this.state.size*this.state.magnifier, hidden:true},null))
