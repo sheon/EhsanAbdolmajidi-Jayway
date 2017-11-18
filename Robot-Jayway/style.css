@@ -1,16 +1,15 @@
 body{
     margin: 0px;
     width:100vw;
+    background-color: white;
 }
 
 .room{
     position: relative;
-    left:40px;
-    top:40px;
+    margin:40px;
 }
 
 .container{
-    height: auto;
     min-height: 100vh;
     left:0;
     display:flex;
@@ -19,12 +18,11 @@ body{
 #form{
     flex: 0 auto;
     width: 25vw;
-    background: lightgrey;
+    background: #84B4B8;
     border-left: 2px solid;
     z-index:99999 ;
     position: sticky;
     bottom: 0px;
-    height:auto;    
 }
 #form > * {
     width: 90%;
@@ -33,7 +31,7 @@ body{
 
 #roomContainer{
     width:75vw;
-    height: auto;
+    height: 100vh;
     left:25vw;
     z-index: 99999;
     overflow: scroll;
