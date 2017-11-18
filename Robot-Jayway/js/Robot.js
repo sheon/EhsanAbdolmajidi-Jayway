@@ -169,7 +169,7 @@ var App =  React.createClass({
       y = +y;
       if(this.state.startX !== null && this.state.startY !== null){
         alert('You need to reset!');
-      } else if (this.state.shape === 'Square' && 0<=x && x-1<this.state.size && 0<=y-1 && y<this.state.size){
+      } else if (this.state.shape === 'Square' && 0<=x-1 && x-1<this.state.size && 0<=y-1 && y-1<this.state.size){
       this.setState({startX:x-1, startY:y-1, direction:0});
     }else if (this.state.shape === 'Circle' && this.distance(x, y)< (this.state.size/2)){
       this.setState({startX:x, startY:y, direction:0});
