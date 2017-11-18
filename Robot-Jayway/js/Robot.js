@@ -194,6 +194,9 @@ var App =  React.createClass({
       nextCommand=90;
     }else if (nextCommand.toLowerCase() === 'f' || nextCommand.toLowerCase() === 'g'){
       nextCommand= 0;
+    }else{
+      alert('Wront command, sorry!!');
+      return false;
     }
     
     var direction = this.state.direction + nextCommand;
@@ -257,6 +260,9 @@ var App =  React.createClass({
       nextCommand=90;
     }else if (nextCommand.toLowerCase() === 'f' || nextCommand.toLowerCase() === 'g'){
       nextCommand= 0;
+    } else{
+      alert('Wront command, sorry!!');
+      return false;
     }
     
     var direction = this.state.direction + nextCommand;
