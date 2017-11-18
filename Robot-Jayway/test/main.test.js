@@ -1,15 +1,14 @@
-var App;
+
+
 describe('App', function() {
-  
+  var node, component;
   // call the init function of calculator to register DOM elements
   beforeEach(function() {
-    jasmine.getFixtures().fixturesPath = 'D:/GitJayway/Robot-Jayway'
-    var fixture = loadFixtures('index.html');
-  });
+      node = document.createElement('div');
+      component = ReactDOM.render(React.createElement(App), node);
+   });
 
-  beforeEach(function() {
-    App = ReactDOM.render(React.createElement(App), document.getElementById('content'));
-  });   
+   
 
    
   
