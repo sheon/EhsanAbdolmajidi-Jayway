@@ -6,12 +6,10 @@ body{
 
 .room{
     position: relative;
-    left:40px;
-    top:40px;
+    margin:40px;
 }
 
 .container{
-    height: auto;
     min-height: 100vh;
     left:0;
     display:flex;
@@ -25,7 +23,6 @@ body{
     z-index:99999 ;
     position: sticky;
     bottom: 0px;
-    height:auto;    
 }
 #form > * {
     width: 90%;
@@ -34,7 +31,7 @@ body{
 
 #roomContainer{
     width:75vw;
-    height: auto;
+    height: 100vh;
     left:25vw;
     z-index: 99999;
     overflow: scroll;
