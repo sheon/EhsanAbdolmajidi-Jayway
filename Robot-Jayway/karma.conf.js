@@ -20,7 +20,7 @@ module.exports = function(config) {
       {pattern: '*/react-0.14.7.js', included: false},
       {pattern: '*/*.html', served: true, included: false},
       {pattern: '*/main.test.js', included: true},
-      // {pattern: '*/main.test.js', included: false}           
+      {pattern: '*/main.js', included: false}           
     ],
 
 
